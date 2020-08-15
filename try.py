@@ -11,24 +11,20 @@ class bandit:
 		self.deviate = 0.01
 		self.mean = 0
 
-
 	def reset(self):
 		self.estimate = np.zeros(10)
 		self.n = 0
+		self.real = np.zeros(10)
 
-
-
-
-
-	def state(self):
-		r = np.random.randn()
+	def state(self, action):
+		if action == 6:
+			r = np.random.normal(0.3,0.1)
+			return r
+		r = np.random.normal(0,0.1)
 		self.n +=1
 		return r
 
-
-
 	def act(self):
-		
 		if np.random.rand() < self.epison:
 			action = np.random.randint(0,9)
 			return action
@@ -41,23 +37,22 @@ class bandit:
 		action = value[0][1]
 		return action
 
-
 def estimate(karm,r):
 		n=karm.n
 		karm.estimate[action] += (r-karm.estimate[action])*0.1
-
+		
 if __name__ == '__main__':
 	karm = bandit()
 	karm.reset()
 	rewards = np.zeros(10000)
 	for a in range(1000):
-		r = karm.state()
 		action = karm.act()
+		r = karm.state(action)
 		estimate(karm,r)
-		os.system('pause')
-		plt.figure()
-		plt.plot(karm.estimate)
-		plt.show()
+		#os.system('pause')
+	plt.figure()
+	plt.plot(karm.estimate)
+	plt.show()
 	
 
 
